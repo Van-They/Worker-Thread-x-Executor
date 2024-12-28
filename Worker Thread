@@ -1,0 +1,29 @@
+public class Worker {
+    private static ExecutorService executorService;
+    private static final String TAG = "Worker";
+
+    public static void initExecutor() {
+        if (executorService == null) {
+            Log.d(TAG, "initExecutor: init worker thread");
+            executorService = Executors.newSingleThreadExecutor();
+        }
+    }
+
+    public static void execute(Runnable runnable) {
+        initExecutor();
+        executorService.execute(runnable);
+    }
+
+    public static ExecutorService getExecutorService() {
+        initExecutor();
+        return executorService;
+    }
+
+    public static void shutdown() {
+        if (executorService != null && !executorService.isShutdown()) {
+            Log.d(TAG, "shutdown: shutdown worker thread");
+            executorService.shutdown();
+        }
+        executorService = null;
+    }
+}
